@@ -1,92 +1,254 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>祝天下有情人终成眷属——七夕节快乐</title>
-    <link rel='stylesheet' href='css/55c16d94000109f300000000.css' />
-    <link rel='stylesheet' href='css/55c16dab0001286100000000.css' />
-    <link rel='stylesheet' href='css/55c16dc00001fa1a00000000.css' />
-    <link rel='stylesheet' href='css/55c16dda0001113100000000.css' />
-    <script type="text/javascript" src="js/55ac9a860001a6c500000000.js"></script>
-    <script type="text/javascript" src="js/55ac9ea30001ace700000000.js"></script>
-    <script type="text/javascript" src="js/55c16c910001e21b00000000.js"></script>
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="Keywords" content="" />
+<meta name="description" content="" />
+<title>酒店预约</title>
+<!-- 引入外部样式 -->
+<link rel="stylesheet" type="text/css" href="css/style.css" >
+<link rel="stylesheet" type="text/css" href="css/DateTimePicker.css" />
+<!-- 引入外部JS -->
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/DateTimePicker.js"></script>
 
 </head>
-
 <body>
-<div id='content'>
-    <ul class='content-wrap'>
-        <!-- 第一副画面 -->
-        <li>
-            <!-- 背景图 -->
-            <div class="a_background">
-                <div class="a_background_top"></div>
-                <div class="a_background_middle"></div>
-                <div class="a_background_botton"></div>
-            </div>
-            <!-- 云 -->
-            <div class="cloudArea">
-                <div class="cloud cloud1"></div>
-                <div class="cloud cloud2"></div>
-            </div>
-            <!-- 太阳 -->
-            <div id="sun"></div>
-        </li>
-        <!-- 第二副画面 -->
-        <li>
-            <!-- 背景图 -->
-            <div class="b_background"></div>
-            <div class="b_background_preload"></div>
-            <!-- 商店 -->
-            <div class="shop">
-                <div class="door">
-                    <div class="door-left"></div>
-                    <div class="door-right"></div>
-                </div>
-                <!-- 灯 -->
-                <div class="lamp"></div>
-            </div>
-            <!-- 鸟 -->
-            <div class="bird"></div>
-        </li>
-        <!-- 第三副画面 -->
-        <li>
-            <!-- 背景图 -->
-            <div class="c_background">
-                <div class="c_background_top"></div>
-                <div class="c_background_middle"></div>
-                <div class="c_background_botton"></div>
-            </div>
-            <!-- 小女孩 -->
-            <div class="girl"></div>
-            <div class="bridge-bottom">
-                <div class="water">
-                    <div id="water1" class="water_1"></div>
-                    <div id="water2" class="water_2"></div>
-                    <div id="water3" class="water_3"></div>
-                    <div id="water4" class="water_4"></div>
-                </div>
-            </div>
-            <!-- 星星 -->
-            <ul class="stars">
-                <li class="stars1"></li>
-                <li class="stars2"></li>
-                <li class="stars3"></li>
-                <li class="stars4"></li>
-                <li class="stars5"></li>
-                <li class="stars6"></li>
-            </ul>
-            <!-- 慕课网logo图 -->
-            <div class="logo">黄文强祝有情人终成眷属</div>
-        </li>
-    </ul>
-    <!-- 雪花 -->
-    <div id="snowflake"></div>
-    <!-- 小男孩 -->
-    <div id="boy" class="charector"></div>
-</div>
+	<div class="header">
+		<div class="width1000">
+			<div class="logo">
+				<img src="images/index-logo.png">
+			</div>
+			<div class="share">
+				<img src="images/index-share.png">
+			</div>
+			<div class="nav">
+				<input type="radio" name="radio-set" checked="checked" id="nav-1">
+				<a href="#index_panel-1">+客房</a>
+				<input type="radio" name="radio-set" id="nav-2">
+				<a href="#index_panel-2">-朋友聚会</a>
+				<input type="radio" name="radio-set" id="nav-3">
+				<a href="#index_panel-3">-二人世界</a>
+				<input type="radio" name="radio-set" id="nav-4">
+				<a href="#index_panel-4">-养生休闲</a>
+				<input type="radio" name="radio-set" id="nav-5">
+				<a href="#index_panel-5">-会员专区</a>
+				<input type="radio" name="radio-set" id="nav-6">
+				<a href="#index_panel-6">-联系我们</a>
+			</div>
+		</div>
+	</div>
+	<div class="date_bar">
+		<div class="width1000">
+			<div class="date_bar_left">
+				<span>SERVICE HOTLINE:<br/>
+					010-666666<br/>
+					<label class="fs12">24小时服务热线：</label>
+				</span>
+			</div>
+			<form action="" method="get">
+			<div class="date_bar_right">
+				<div class="date_type">
+					<div class="type_name">入住日期</div>
+					<div class="type_name">离开日期</div>
+				</div>
+				<div class="date_select">
+					<div class="select_box">
+						<input type="date" data-field="date" value="2017-02-22" readonly />
+						<span class="select_icon"></span>
+					</div>
+					<div class="select_box">
+						<input type="date" data-field="date" value="2017-03-22" readonly />
+						<span class="select_icon"></span>
+					</div>
+				</div>
+				<div class="date_submit"><input type="submit" value="立即预约"/></div>
+			</div>
+			</form>
+		</div>
+	</div>
+    <div class="container">
+    			<section class="index_panel">
+    				<div class="service_title"></div>
+					<div class="service_content">
+						<div class="content">
+							<div class="content_up"><img src="images/index-bg.png" /></div>
+							<div class="content_down"><img src="images/service-1.png" /></div>
+						</div>
+						<div class="content set_down70">
+							<div class="content_up set_height250"><img src="images/service-4.png" /></div>
+							<div class="content_down"><img src="images/service-2.png" />
+							<div class="content_box"><span class="fs18 martop20">健身房 THE GYM</span><br/><span class="fs12">器械设备齐全，有较全的健身及娱乐项目器械设备齐全，有较全的健身及娱乐项目</span></div></div>
+						</div>
+						<div class="content">
+							<div class="content_up"><img src="images/service-2.png" /></div>
+							<div class="content_down set_height180"><img src="images/service-5.png" />
+							<div class="content_box"><span class="fs12 martop20">器械设备齐全，有较全的健身及娱乐项目器械设备齐全，有较全的健身及娱乐项目器械设备齐全，有较全的健身及娱乐项目器械设备齐全，有较全的健身及娱乐项目器械设备齐全，有较全的健身及娱乐项目器械设备齐全，有较全的健身及娱乐项目</span> </div></div>
+						</div>
+						<div class="content set_down-55">
+							<div class="content_up set_pointer"><img id="testimg" src="images/service-6.png" /></div>
+							<div class="content_down"><img src="images/index-bg.png" /></div>
+						</div>
+						<div class="content set_down75">
+							<div class="content_up set_height250"><img src="images/service-4.png" /></div>
+							<div class="content_down set_height250"><img src="images/service-3.png" /></div>
+						</div>
+						<div class="content set_down-55">
+							<div class="content_up"><img src="images/service-1.png" /></div>
+							<div class="content_down"><img src="images/service-2.png" /></div>
+						</div>
+						<div class="content_bar">
+						</div>
+					</div>
+					
+					<div class="show_title"></div>
+					<div class="show_content">
+						<div class="show_box">
+							<div class="show_box-top">
+								<img class="show_box-img" src="images/index-bg.png" alt="">
+							</div>
+							<div class="show_box-title">
+								花园豪华间
+							</div>
+							<div class="show_box-info">
+								这件双人间配有空调，休息区和电热水壶，休息区和电热水壶。
+							</div>
+						</div>
+						<div class="show_box">
+							<div class="show_box-top">
+								<img class="show_box-img" src="images/service-2.png" alt="">
+							</div>
+							<div class="show_box-title">
+								花园豪华间
+							</div>
+							<div class="show_box-info">
+								这件双人间配有空调，休息区和电热水壶，休息区和电热水壶。
+							</div>
+						</div>
+						<div class="show_box">
+							<div class="show_box-top">
+								<img class="show_box-img" src="images/index-bg.png" alt="">
+							</div>
+							<div class="show_box-title">
+								花园豪华间
+							</div>
+							<div class="show_box-info">
+								这件双人间配有空调，休息区和电热水壶，休息区和电热水壶。
+							</div>
+						</div>
+						<div class="show_box">
+							<div class="show_box-top">
+								<img class="show_box-img" src="images/service-2.png" alt="">
+							</div>
+							<div class="show_box-title">
+								花园豪华间
+							</div>
+							<div class="show_box-info">
+								这件双人间配有空调，休息区和电热水壶，休息区和电热水壶。
+							</div>
+						</div>
+					</div>
+    			</section>		
+    </div>
+			<div class="width1000">
+				<div class="feedback">
+					<div class="feedback_left">
+					<form action="" method="get">
+						<div class="feedback_left_title">服务反馈</div>
+						<div class="feedback_left_name">姓名：<input type="text" placeholder="请输入姓名"/></div>
+						<div class="feedback_left_tel">电话：<input type="text" placeholder="请输入电话"/></div>
+						<div class="feedback_left_info">留言：<br/><textarea placeholder="请输入留言"></textarea></div>
+						<div class="feedback_left_input">
+							<input class="inputsubmit" type="submit" value="提交"/><input class="inputreset" type="reset" value="重置"/>
+						</div>
+					</form>
+					</div>
+					<div class="feedback_right">
+						<div class="feedback_right_title">全国服务热线</div>
+						<div class="feedback_right_tel">010-6666-8888</div>
+						<div class="feedback_right_ewm"><img src="images/index-rwm.png"/></div>
+						<div class="feedback_right_mail">邮箱：8888888@qq.com</div>
+						<div class="feedback_right_add">地址：北京市朝阳区东三环中路88号院建外某某西区88号</div>
+						<div class="feedback_right_copy">Copyright © 北京某某某餐饮管理有限公司<br/>京ICP备13008888号-1</div>
+					</div>
+				</div>
+				<div class="feedback_bar1">︾</div>
+				<div class="feedback_bar">︽</div>
+			</div>
+		<div class="footer"><div class="footer_box"></div></div>
+		
+		
+		
+
+		
+		
+		
 </body>
 
+<!-- 选择日期插件 -->
+<div id="dtBox"></div>
+<script type="text/javascript">
+		
+			$(document).ready(function()
+			{
+				$("#dtBox").DateTimePicker(
+				{
+					dateFormat: "yyyy-MM-dd",
+					dateTimeFormat: "yyyy-MM-dd HH:mm:ss",
+					timeFormat: "HH:mm",
+					shortDayNames: ["日", "一", "二", "三", "四", "五", "六"],
+					fullDayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+					shortMonthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+					fullMonthNames:  ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],			
+					titleContentDate: "设置日期",
+					titleContentTime: "设置时间",
+					titleContentDateTime: "设置日期和时间",					
+					buttonsToDisplay: ["HeaderCloseButton", "SetButton", "ClearButton"],
+					setButtonContent: "确定",
+					clearButtonContent: "取消"
+				});
+			});
+		
+</script>
+
+<!-- 视频弹出层 -->
+<div id="videobox">
+    <span id="closex">+</span>
+    <video id="video" src="video/dance.mp4" controls="controls"></video>
+</div>
+<script type="text/javascript">
+var testimg = document.getElementById('testimg');
+var videobox = document.getElementById('videobox');
+var closex  = document.getElementById('closex');
+var video = document.getElementById('video');
+ 
+testimg.onclick = function()
+{
+    videobox.style.display = 'block';
+	//video.play();
+}
+closex.onclick = function()
+{
+    videobox.style.display = 'none';
+	video.pause();
+}
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".feedback_bar1").click(function(){
+  $(".feedback").hide();
+  $(".feedback_bar").show();
+  $(".feedback_bar1").hide();
+  $(".footer_box").hide();
+  });
+  $(".feedback_bar").click(function(){
+  $(".feedback").show();
+  $(".feedback_bar1").show();
+  $(".feedback_bar").hide();
+  $(".footer_box").show();
+  });
+});
+</script>
 </html>
