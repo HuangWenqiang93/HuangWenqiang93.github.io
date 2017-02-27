@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<!-- saved from url=(0021)http://feei.top/zxdx/ -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=750,target-densitydpi=340,user-scalable=no">
+<title>空间详情</title>
+<link rel="stylesheet" href="css/public.css">
+<style>
+body{ background:#F7F7F7 !important}
+.nav_data{ height:100px;line-height:100px; color:#fff; font-size:35px; position:fixed; width:95%; padding-right:5%; left:0px; top:0px;}
+.nav_data{ background:#FD4C5B url(img/70%20Basic%20Icons-all-24.svg) 26px 30px no-repeat}
+.nav_data .left{ float:left; padding-left:85px; cursor:pointer}
+.nav_data .right{ float:right; cursor:pointer}
+
+.about_us{ padding:5%;padding-top:140px;}
+.about_us p{ font-size:30px; color:#888888; text-indent:60px; line-height:40px}
+h3{
+	font-size: 2.5em;
+    line-height: 100px;
+    font-weight: normal;
+}
+pre{
+display: block;
+    display: block;
+    padding: 10px;
+    margin: 0 0 10.5px;
+    font-size: 2em;
+    line-height: 1.45;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #333;
+    background-color: rgba(128,128,128,0.05);
+    border: 1px solid rgba(128,128,128,0.075);
+    border-radius: 0;
+    overflow: scroll;
+    padding: 5px;
+    position: relative;
+    overflow-y: hidden;
+    overflow-x: auto;
+    padding-left: 60px;
+}
+.pre-numbering {
+    position: absolute;
+    width: 50px;
+    background-color: #eee;
+    top: 0px;
+    left: 0;
+    margin: 0;
+    padding: 6px 0 40px 0;
+    border-right: 1px solid #ddd;
+    list-style: none;
+    text-align: right;
+}
+</style>
+</head>
+<body id="body_bg">
+    <!-- <div class="nav_data">
+        <div id="closex" class="left" onclick="window.history.go(-1)">关于我自己</div>
+    </div> -->
+	<div class="about_us">
+    	<h3>前言</h3>
+
+<p>今天给大家介绍另外一种基于 iOS 8 新推出的 WKWebView 组件，构建出自己的混合开发框架。</p>
+
+<h3>WKWebView 简介</h3>
+
+<p>WKWebView 是苹果在 iOS 8 中引入的新组件，目的是给出一个新的高性能的 Web View 解决方案，摆脱过去 UIWebView 的老旧笨重特别是内存占用量巨大的问题。
+
+苹果将 UIWebViewDelegate 与 UIWebView 重构成了 14 个类和 3 个协议，引入了不少新的功能和接口，这可以在一定程度上看做苹果对其封锁 Web View 内核的行为作出的补偿：既然你们都说 UIWebView 太渣，那我就造一个不渣的给你们用呗~~ 众所周知，连 Chrome 的 iOS 版用的也是 UIWebView 的内核。
+</p>
+<h3>WKWebView 有哪些进步呢?</h3>
+<p>
+1.将浏览器内核渲染进程提取出 App，由系统进行统一管理，这减少了相当一部分的性能损失。
+
+2.js 可以直接使用已经事先注入 js runtime 的 js 接口给 Native 层传值，不必再通过苦逼的 iframe 制造页面刷新再解析自定义协议的奇怪方式。
+
+3.支持高达 60 fps 的滚动刷新率，内置了手势探测。</p>
+<h3>WKWebView API介绍</h3>
+
+<p>WKWebView的头文件声明</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-comment">// webview 配置，具体看下面</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) WKWebViewConfiguration *configuration;
+
+<span class="hljs-comment">// 导航代理 </span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">weak</span>) <span class="hljs-keyword">id</span> &lt;WKNavigationDelegate&gt; navigationDelegate;
+
+<span class="hljs-comment">// 用户交互代理</span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">weak</span>) <span class="hljs-keyword">id</span> &lt;WKUIDelegate&gt; UIDelegate;
+
+<span class="hljs-comment">// 页面前进、后退列表</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">strong</span>) WKBackForwardList *backForwardList;
+
+<span class="hljs-comment">// 默认构造器</span>
+- (instancetype)initWithFrame:(<span class="hljs-built_in">CGRect</span>)frame configuration:(WKWebViewConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+
+<span class="hljs-comment">// 已不再使用</span>
+- (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+
+<span class="hljs-comment">// 与UIWebView一样的加载请求API</span>
+- (nullable WKNavigation *)loadRequest:(<span class="hljs-built_in">NSURLRequest</span> *)request;
+
+<span class="hljs-comment">// 加载URL</span>
+- (nullable WKNavigation *)loadFileURL:(<span class="hljs-built_in">NSURL</span> *)URL allowingReadAccessToURL:(<span class="hljs-built_in">NSURL</span> *)readAccessURL NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+<span class="hljs-comment">// 直接加载HTML</span>
+- (nullable WKNavigation *)loadHTMLString:(<span class="hljs-built_in">NSString</span> *)string baseURL:(nullable <span class="hljs-built_in">NSURL</span> *)baseURL;
+
+<span class="hljs-comment">// 直接加载data</span>
+- (nullable WKNavigation *)loadData:(NSData *)data MIMEType:(<span class="hljs-built_in">NSString</span> *)MIMEType characterEncodingName:(<span class="hljs-built_in">NSString</span> *)characterEncodingName baseURL:(<span class="hljs-built_in">NSURL</span> *)baseURL NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+<span class="hljs-comment">// 前进或者后退到某一页面</span>
+- (nullable WKNavigation *)goToBackForwardListItem:(WKBackForwardListItem *)item;
+
+<span class="hljs-comment">// 页面的标题，这昆支持KVO的</span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSString</span> *title;
+
+<span class="hljs-comment">// 当前请求的URL，它是支持KVO的</span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSURL</span> *URL;
+
+<span class="hljs-comment">// 标识当前是否正在加载内容中，它是支持KVO的</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, getter=isLoading) <span class="hljs-built_in">BOOL</span> loading;
+
+<span class="hljs-comment">// 当前加载的进度，范围为[0, 1]</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-keyword">double</span> estimatedProgress;
+
+<span class="hljs-comment">// 标识页面中的所有资源是否通过安全加密连接来加载，它是支持KVO的</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">BOOL</span> hasOnlySecureContent;
+
+<span class="hljs-comment">// 当前导航的证书链，支持KVO</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSArray</span> *certificateChain NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+<span class="hljs-comment">// 是否可以招待goback操作，它是支持KVO的</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">BOOL</span> canGoBack;
+
+<span class="hljs-comment">// 是否可以执行gofarward操作，支持KVO</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">BOOL</span> canGoForward;
+
+<span class="hljs-comment">// 返回上一页面，如果不能返回，则什么也不干</span>
+- (nullable WKNavigation *)goBack;
+
+<span class="hljs-comment">// 进入下一页面，如果不能前进，则什么也不干</span>
+- (nullable WKNavigation *)goForward;
+
+<span class="hljs-comment">// 重新载入页面</span>
+- (nullable WKNavigation *)reload;
+
+<span class="hljs-comment">// 重新从原始URL载入</span>
+- (nullable WKNavigation *)reloadFromOrigin;
+
+<span class="hljs-comment">// 停止加载数据</span>
+- (<span class="hljs-keyword">void</span>)stopLoading;
+
+<span class="hljs-comment">// 执行JS代码</span>
+- (<span class="hljs-keyword">void</span>)evaluateJavaScript:(<span class="hljs-built_in">NSString</span> *)javaScriptString completionHandler:(<span class="hljs-keyword">void</span> (^ __nullable)(__nullable <span class="hljs-keyword">id</span>, <span class="hljs-built_in">NSError</span> * __nullable error))completionHandler;
+
+<span class="hljs-comment">// 标识是否支持左、右swipe手势是否可以前进、后退</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>) <span class="hljs-built_in">BOOL</span> allowsBackForwardNavigationGestures;
+
+<span class="hljs-comment">// 自定义user agent，如果没有则为nil</span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">nonatomic</span>, copy) <span class="hljs-built_in">NSString</span> *customUserAgent NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+<span class="hljs-comment">// 在iOS上默认为NO，标识不允许链接预览</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>) <span class="hljs-built_in">BOOL</span> allowsLinkPreview NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><li>60</li><li>61</li><li>62</li><li>63</li><li>64</li><li>65</li><li>66</li><li>67</li><li>68</li><li>69</li><li>70</li><li>71</li><li>72</li><li>73</li><li>74</li><li>75</li><li>76</li><li>77</li><li>78</li><li>79</li><li>80</li><li>81</li><li>82</li><li>83</li><li>84</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>WKWebViewConfiguration配置</p>
+<pre class="prettyprint"><code class="hljs fix has-numbering"><span class="hljs-attribute">WKWebViewConfiguration *config </span>=<span class="hljs-string"> [[WKWebViewConfiguration alloc] init];</span></code><ul class="pre-numbering"><li>1</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets_01.png"></a></div></pre>
+<p>WKPreferences偏好设置</p>
+<pre class="prettyprint"><code class="hljs avrasm has-numbering">// 设置偏好设置
+config<span class="hljs-preprocessor">.preferences</span> = [[WKPreferences alloc] init]<span class="hljs-comment">;</span>
+// 默认为<span class="hljs-number">0</span>
+config<span class="hljs-preprocessor">.preferences</span><span class="hljs-preprocessor">.minimumFontSize</span> = <span class="hljs-number">10</span><span class="hljs-comment">;</span>
+// 默认认为YES
+config<span class="hljs-preprocessor">.preferences</span><span class="hljs-preprocessor">.javaScriptEnabled</span> = YES<span class="hljs-comment">;</span>
+// 在iOS上默认为NO，表示不能自动通过窗口打开
+config<span class="hljs-preprocessor">.preferences</span><span class="hljs-preprocessor">.javaScriptCanOpenWindowsAutomatically</span> = NO<span class="hljs-comment">;</span></code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>WKProcessPool内容处理池
+
+WKProcessPool并没有公开任何的属性或者方法，不需要配置：</p>
+<pre class="prettyprint"><code class="hljs fix has-numbering"><span class="hljs-attribute">config.processPool </span>=<span class="hljs-string"> [[WKProcessPool alloc] init];</span></code><ul class="pre-numbering"><li>1</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets_01.png"></a></div></pre>
+<p>WKUserContentController内容交互控制器
+
+我们要通过JS与webview内容交互，就需要到这个类了，它的所有属性及方法说明如下：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-comment">// 只读属性，所有添加的WKUserScript都在这里可以获取到</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSArray</span>&lt;WKUserScript *&gt; *userScripts;
+
+<span class="hljs-comment">// 注入JS</span>
+- (<span class="hljs-keyword">void</span>)addUserScript:(WKUserScript *)userScript;
+
+<span class="hljs-comment">// 移除所有注入的JS</span>
+- (<span class="hljs-keyword">void</span>)removeAllUserScripts;
+
+<span class="hljs-comment">// 添加scriptMessageHandler到所有的frames中，则都可以通过</span>
+<span class="hljs-comment">// window.webkit.messageHandlers.&lt;name&gt;.postMessage(&lt;messageBody&gt;)</span>
+<span class="hljs-comment">// 发送消息</span>
+<span class="hljs-comment">// 比如，JS要调用我们原生的方法，就可以通过这种方式了</span>
+- (<span class="hljs-keyword">void</span>)addScriptMessageHandler:(<span class="hljs-keyword">id</span> &lt;WKScriptMessageHandler&gt;)scriptMessageHandler name:(<span class="hljs-built_in">NSString</span> *)name;
+
+<span class="hljs-comment">// 根据name移除所注入的scriptMessageHandler</span>
+- (<span class="hljs-keyword">void</span>)removeScriptMessageHandlerForName:(<span class="hljs-built_in">NSString</span> *)name;</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>WKUserScript
+
+在WKUserContentController中，所有使用到WKUserScript。WKUserContentController是用于与JS交互的类，而所注入的JS是WKUserScript对象。它的所有属性和方法如下：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-comment">// JS源代码</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSString</span> *source;
+
+<span class="hljs-comment">// JS注入时间</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>) WKUserScriptInjectionTime injectionTime;
+
+<span class="hljs-comment">// 只读属性，表示JS是否应该注入到所有的frames中还是只有main frame.</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, getter=isForMainFrameOnly) <span class="hljs-built_in">BOOL</span> forMainFrameOnly;
+
+<span class="hljs-comment">// 初始化方法，用于创建WKUserScript对象</span>
+<span class="hljs-comment">// source：JS源代码</span>
+<span class="hljs-comment">// injectionTime：JS注入的时间</span>
+<span class="hljs-comment">// forMainFrameOnly：是否只注入main frame</span>
+- (instancetype)initWithSource:(<span class="hljs-built_in">NSString</span> *)source injectionTime:(WKUserScriptInjectionTime)injectionTime forMainFrameOnly:(<span class="hljs-built_in">BOOL</span>)forMainFrameOnly;
+</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>WKUserScriptInjectionTime
+
+它是一个枚举类型，只有在文档开始加载时注入和加载结束时注入。</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-keyword">typedef</span> NS_ENUM(<span class="hljs-built_in">NSInteger</span>, WKUserScriptInjectionTime) {
+    WKUserScriptInjectionTimeAtDocumentStart,
+    WKUserScriptInjectionTimeAtDocumentEnd
+} NS_ENUM_AVAILABLE(<span class="hljs-number">10</span>_10, <span class="hljs-number">8</span>_0);</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>WKWebsiteDataStore存储的Web内容
+
+iOS9.0以后才能使用这个类。它是代表webview不同的数据类型，包括cookies、disk、memory caches、WebSQL、IndexedDB数据库和本地存储。 
+从这里看，要优化Webview好像可以通过它来实现，不过要求iOS9.0以上才能使用。现在6.0都没有抛弃的我，从来不能考虑这种最新的。 
+WKProcessPool并没有公开任何的属性或者方法，不需要配置：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-comment">// 默认数据存储</span>
++ (WKWebsiteDataStore *)defaultDataStore;
+
+<span class="hljs-comment">// 返回非持久化存储，数据不会写入文件系统</span>
++ (WKWebsiteDataStore *)nonPersistentDataStore;
+
+<span class="hljs-comment">// 已经不可用</span>
+- (instancetype)init NS_UNAVAILABLE;
+
+<span class="hljs-comment">// 只读属性，表示是否是持久化存储</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, getter=isPersistent) <span class="hljs-built_in">BOOL</span> persistent;
+
+<span class="hljs-comment">// 获取所有web内容的数据存储类型集，比如cookies、disk等</span>
++ (NSSet&lt;<span class="hljs-built_in">NSString</span> *&gt; *)allWebsiteDataTypes;
+
+<span class="hljs-comment">// 获取某些指定数据存储类型的数据</span>
+- (<span class="hljs-keyword">void</span>)fetchDataRecordsOfTypes:(NSSet&lt;<span class="hljs-built_in">NSString</span> *&gt; *)dataTypes completionHandler:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSArray</span>&lt;WKWebsiteDataRecord *&gt; *))completionHandler;
+
+<span class="hljs-comment">// 删除某些指定类型的数据</span>
+- (<span class="hljs-keyword">void</span>)removeDataOfTypes:(NSSet&lt;<span class="hljs-built_in">NSString</span> *&gt; *)dataTypes forDataRecords:(<span class="hljs-built_in">NSArray</span>&lt;WKWebsiteDataRecord *&gt; *)dataRecords completionHandler:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-keyword">void</span>))completionHandler;
+
+<span class="hljs-comment">// 删除某些指定类型的数据且修改日期是指定的日期</span>
+- (<span class="hljs-keyword">void</span>)removeDataOfTypes:(NSSet&lt;<span class="hljs-built_in">NSString</span> *&gt; *)websiteDataTypes modifiedSince:(<span class="hljs-built_in">NSDate</span> *)date completionHandler:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-keyword">void</span>))completionHandler;
+</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>所有的dataTypes是下面这些系统所定义的：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering">WK_EXTERN <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> WKWebsiteDataTypeDiskCache NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+WK_EXTERN <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> WKWebsiteDataTypeMemoryCache NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+WK_EXTERN <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> WKWebsiteDataTypeOfflineWebApplicationCache NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+WK_EXTERN <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> WKWebsiteDataTypeCookies NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+WK_EXTERN <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> WKWebsiteDataTypeSessionStorage NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+WK_EXTERN <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> WKWebsiteDataTypeLocalStorage NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+WK_EXTERN <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> WKWebsiteDataTypeWebSQLDatabases NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+
+WK_EXTERN <span class="hljs-built_in">NSString</span> * <span class="hljs-keyword">const</span> WKWebsiteDataTypeIndexedDBDatabases NS_AVAILABLE(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0);
+</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>WKWebsiteDataRecord
+
+iOS9.0以后才可用。 
+website的数据存储记录类型，它只有两个属性：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-comment">// 通常是域名</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSString</span> *displayName;
+
+<span class="hljs-comment">// 存储的数据类型集</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) NSSet&lt;<span class="hljs-built_in">NSString</span> *&gt; *dataTypes;</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>WKSelectionGranularity选择粒度
+
+它表示在webview上选择内容的粒度，只有下面这两种类型：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-keyword">typedef</span> NS_ENUM(<span class="hljs-built_in">NSInteger</span>, WKSelectionGranularity) {
+    WKSelectionGranularityDynamic,
+    WKSelectionGranularityCharacter,
+} NS_ENUM_AVAILABLE_IOS(<span class="hljs-number">8</span>_0);</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>它是用于webview内容交互时选择内容的粒度类型设置。比如说，当使用WKSelectionGranularityDynamic时，而所选择的内容是单个块，这时候granularity可能会是单个字符；当所选择的web内容不限制于某个块时，granularity可能会是单个块。
+
+WKNavigationDelegate</p>
+<pre class="prettyprint"><code class="hljs erlang has-numbering">@protocol <span class="hljs-variable">WKNavigationDelegate</span> &lt;<span class="hljs-variable">NSObject</span>&gt;
+
+@optional
+
+// 决定导航的动作，通常用于处理跨域的链接能否导航。<span class="hljs-variable">WebKit</span>对跨域进行了安全检查限制，不允许跨域，因此我们要对不能跨域的链接
+// 单独处理。但是，对于<span class="hljs-variable">Safari</span>是允许跨域的，不用这么处理。
+// 这个是决定是否<span class="hljs-variable">Request</span>
+<span class="hljs-pp">- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView decidePolicyForNavigationAction:<span class="hljs-params">(<span class="hljs-variable">WKNavigationAction</span> *)</span>navigationAction decisionHandler:<span class="hljs-params">(void (^)</span><span class="hljs-params">(<span class="hljs-variable">WKNavigationActionPolicy</span>)</span>)decisionHandler;
+
+// 决定是否接收响应
+// 这个是决定是否接收response
+// 要获取response，通过WKNavigationResponse对象获取
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView decidePolicyForNavigationResponse:<span class="hljs-params">(<span class="hljs-variable">WKNavigationResponse</span> *)</span>navigationResponse decisionHandler:<span class="hljs-params">(void (^)</span><span class="hljs-params">(<span class="hljs-variable">WKNavigationResponsePolicy</span>)</span>)decisionHandler;
+
+// 当main frame的导航开始请求时，会调用此方法
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView didStartProvisionalNavigation:<span class="hljs-params">(null_unspecified <span class="hljs-variable">WKNavigation</span> *)</span>navigation;
+
+// 当main frame接收到服务重定向时，会回调此方法
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView didReceiveServerRedirectForProvisionalNavigation:<span class="hljs-params">(null_unspecified <span class="hljs-variable">WKNavigation</span> *)</span>navigation;
+
+// 当main frame开始加载数据失败时，会回调
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView didFailProvisionalNavigation:<span class="hljs-params">(null_unspecified <span class="hljs-variable">WKNavigation</span> *)</span>navigation withError:<span class="hljs-params">(<span class="hljs-variable">NSError</span> *)</span>error;
+
+// 当main frame的web内容开始到达时，会回调
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView didCommitNavigation:<span class="hljs-params">(null_unspecified <span class="hljs-variable">WKNavigation</span> *)</span>navigation;
+
+// 当main frame导航完成时，会回调
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView didFinishNavigation:<span class="hljs-params">(null_unspecified <span class="hljs-variable">WKNavigation</span> *)</span>navigation;
+
+// 当main frame最后下载数据失败时，会回调
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView didFailNavigation:<span class="hljs-params">(null_unspecified <span class="hljs-variable">WKNavigation</span> *)</span>navigation withError:<span class="hljs-params">(<span class="hljs-variable">NSError</span> *)</span>error;
+
+// 这与用于授权验证的API，与AFN、UIWebView的授权验证API是一样的
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView didReceiveAuthenticationChallenge:<span class="hljs-params">(<span class="hljs-variable">NSURLAuthenticationChallenge</span> *)</span>challenge completionHandler:<span class="hljs-params">(void (^)</span><span class="hljs-params">(<span class="hljs-variable">NSURLSessionAuthChallengeDisposition</span> disposition, <span class="hljs-variable">NSURLCredential</span> *<span class="hljs-variable">_</span>_nullable credential)</span>)completionHandler;
+
+// 当web content处理完成时，会回调
+- <span class="hljs-params">(void)</span>webViewWebContentProcessDidTerminate:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView NS_AVAILABLE<span class="hljs-params">(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0)</span>;
+
+@end
+</span></code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>WKNavigationActionPolicy
+
+导航动作决定策略：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-keyword">typedef</span> NS_ENUM(<span class="hljs-built_in">NSInteger</span>, WKNavigationActionPolicy) {
+    WKNavigationActionPolicyCancel,
+    WKNavigationActionPolicyAllow,
+} NS_ENUM_AVAILABLE(<span class="hljs-number">10</span>_10, <span class="hljs-number">8</span>_0);</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>它是枚举类型，只有Cancel和Allow这两种。设置为Cancel就是不允许导航，就不会跳转链接。
+
+WKNavigationResponse
+
+WKNavigationResponse是导航响应类，通过它可以获取相关响应的信息：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering">NS_CLASS_AVAILABLE(<span class="hljs-number">10</span>_10, <span class="hljs-number">8</span>_0)
+<span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">WKNavigationResponse</span> : <span class="hljs-title">NSObject</span></span>
+
+<span class="hljs-comment">// 是否是main frame</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, getter=isForMainFrame) <span class="hljs-built_in">BOOL</span> forMainFrame;
+
+<span class="hljs-comment">// 获取响应response</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) NSURLResponse *response;
+
+<span class="hljs-comment">// 是否显示MIMEType</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">BOOL</span> canShowMIMEType;
+
+<span class="hljs-keyword">@end</span></code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>只有接收响应与不接收响应两种。
+
+WKNavigationAction
+
+WKNavigationAction对象包含关于导航的action的信息，用于make policy decisions。它只有以下几个属性：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-comment">// 正在请求的导航的frame</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) WKFrameInfo *sourceFrame;
+
+<span class="hljs-comment">// 目标frame，如果这是新的window，它会是nil</span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) WKFrameInfo *targetFrame;
+
+<span class="hljs-comment">// 导航类型，如下面的小标题WKNavigationType</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>) WKNavigationType navigationType;
+
+<span class="hljs-comment">// 导航的请求</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSURLRequest</span> *request;</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>
+WKNavigationType
+
+WKNavigationType类型是枚举类型，它的可选值如下:</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering"><span class="hljs-keyword">typedef</span> NS_ENUM(<span class="hljs-built_in">NSInteger</span>, WKNavigationType) {
+<span class="hljs-comment">// 链接已经点击</span>
+    WKNavigationTypeLinkActivated,
+    <span class="hljs-comment">// 表单提交</span>
+    WKNavigationTypeFormSubmitted,
+    <span class="hljs-comment">// 前进、后退</span>
+    WKNavigationTypeBackForward,
+    <span class="hljs-comment">// 重新载入</span>
+    WKNavigationTypeReload,
+    <span class="hljs-comment">// 表单重新提交</span>
+    WKNavigationTypeFormResubmitted,
+    <span class="hljs-comment">// 其它</span>
+    WKNavigationTypeOther = -<span class="hljs-number">1</span>,
+} NS_ENUM_AVAILABLE(<span class="hljs-number">10</span>_10, <span class="hljs-number">8</span>_0);</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>
+WKUIDelegate</p>
+<pre class="prettyprint"><code class="hljs erlang has-numbering">@protocol <span class="hljs-variable">WKUIDelegate</span> &lt;<span class="hljs-variable">NSObject</span>&gt;
+
+@optional
+
+// 创建新的webview
+// 可以指定配置对象、导航动作对象、window特性
+<span class="hljs-pp">- <span class="hljs-params">(nullable <span class="hljs-variable">WKWebView</span> *)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView createWebViewWithConfiguration:<span class="hljs-params">(<span class="hljs-variable">WKWebViewConfiguration</span> *)</span>configuration forNavigationAction:<span class="hljs-params">(<span class="hljs-variable">WKNavigationAction</span> *)</span>navigationAction windowFeatures:<span class="hljs-params">(<span class="hljs-variable">WKWindowFeatures</span> *)</span>windowFeatures;
+
+// webview关闭时回调
+- <span class="hljs-params">(void)</span>webViewDidClose:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView NS_AVAILABLE<span class="hljs-params">(<span class="hljs-number">10</span>_11, <span class="hljs-number">9</span>_0)</span>;
+
+// 调用JS的alert<span class="hljs-params">()</span>方法
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView runJavaScriptAlertPanelWithMessage:<span class="hljs-params">(<span class="hljs-variable">NSString</span> *)</span>message initiatedByFrame:<span class="hljs-params">(<span class="hljs-variable">WKFrameInfo</span> *)</span>frame completionHandler:<span class="hljs-params">(void (^)</span><span class="hljs-params">(void)</span>)completionHandler;
+
+// 调用JS的confirm<span class="hljs-params">()</span>方法
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView runJavaScriptConfirmPanelWithMessage:<span class="hljs-params">(<span class="hljs-variable">NSString</span> *)</span>message initiatedByFrame:<span class="hljs-params">(<span class="hljs-variable">WKFrameInfo</span> *)</span>frame completionHandler:<span class="hljs-params">(void (^)</span><span class="hljs-params">(<span class="hljs-variable">BOOL</span> result)</span>)completionHandler;
+
+// 调用JS的prompt<span class="hljs-params">()</span>方法
+- <span class="hljs-params">(void)</span>webView:<span class="hljs-params">(<span class="hljs-variable">WKWebView</span> *)</span>webView runJavaScriptTextInputPanelWithPrompt:<span class="hljs-params">(<span class="hljs-variable">NSString</span> *)</span>prompt defaultText:<span class="hljs-params">(nullable <span class="hljs-variable">NSString</span> *)</span>defaultText initiatedByFrame:<span class="hljs-params">(<span class="hljs-variable">WKFrameInfo</span> *)</span>frame completionHandler:<span class="hljs-params">(void (^)</span><span class="hljs-params">(<span class="hljs-variable">NSString</span> * <span class="hljs-variable">_</span>_nullable result)</span>)completionHandler;
+
+@end</span></code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>
+WKBackForwardList
+
+WKBackForwardList表示webview中可以前进或者后退的页面列表。其声明如下：</p>
+<pre class="prettyprint"><code class="hljs objectivec has-numbering">NS_CLASS_AVAILABLE(<span class="hljs-number">10</span>_10, <span class="hljs-number">8</span>_0)
+<span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">WKBackForwardList</span> : <span class="hljs-title">NSObject</span></span>
+
+<span class="hljs-comment">// 当前正在显示的item（页面）</span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">strong</span>) WKBackForwardListItem *currentItem;
+
+<span class="hljs-comment">// 后一页，如果没有就是nil</span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">strong</span>) WKBackForwardListItem *backItem;
+
+<span class="hljs-comment">// 前一页，如果没有就是nil</span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">strong</span>) WKBackForwardListItem *forwardItem;
+
+<span class="hljs-comment">// 根据下标获取某一个页面的item</span>
+- (nullable WKBackForwardListItem *)itemAtIndex:(<span class="hljs-built_in">NSInteger</span>)index;
+
+<span class="hljs-comment">// 可以进行goback操作的页面列表</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSArray</span>&lt;WKBackForwardListItem *&gt; *backList;
+
+<span class="hljs-comment">// 可以进行goforward操作的页面列表</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSArray</span> *forwardList;
+
+<span class="hljs-keyword">@end</span></code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<p>
+WKBackForwardListItem
+
+页面导航前进、后退列表项：</p>
+<pre class="prettyprint"><code class="language-NS_CLASS_AVAILABLE(10_10, 8_0) hljs objectivec has-numbering"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">WKBackForwardListItem</span> : <span class="hljs-title">NSObject</span></span>
+
+<span class="hljs-comment">// 该页面的URL</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSURL</span> *URL;
+
+<span class="hljs-comment">// 该页面的title</span>
+<span class="hljs-keyword">@property</span> (nullable, <span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSString</span> *title;
+
+<span class="hljs-comment">// 初始请求该item的请求的URL</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">readonly</span>, copy) <span class="hljs-built_in">NSURL</span> *initialURL;
+
+<span class="hljs-keyword">@end</span></code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li></ul><div class="save_code tracking-ad" data-mod="popu_249" style="display: none;"><a href="javascript:;" target="_blank"><img src="http://static.blog.csdn.net/images/save_snippets.png"></a></div></pre>
+<h3>结束</h3>
+<p>这样这个框架基本介绍完了,实战下一篇会给大家着重介绍如何使用.</p>
+<p><a href="http://blog.csdn.net/baihuaxiu123/article/details/51674726">iOS与HTML5交互方法总结<a/></p>
+
+    </div>
+</body>
+</html>

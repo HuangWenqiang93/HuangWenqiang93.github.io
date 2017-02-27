@@ -700,6 +700,54 @@
 					<div class="swiper-slide" style="width: 750px;height:1210px;overflow:auto; background:#ECECEC">
                     	<div class="space news">
                         	<ul>
+								
+								<li id="space1">
+								
+                                    <div class="lf">
+                                        <img src="img/a1.png" />
+                                         <h1>黄文强</h1>
+                                    </div>
+                                    <div class="rt">
+                                        <span>晚上23:37</span>
+                                    </div>
+                                    <div style="clear:both"></div>
+                                    <p class="say">
+                                    WKWebView与JS交互实战技巧之API介绍<br/>
+									WKWebView 简介<br/>
+WKWebView 是苹果在 iOS 8 中引入的新组件，目的是给出一个新的高性能的 Web View 解决方案，摆脱过去 UIWebView 的老旧笨重特别是内存占用量巨大的问题。
+                                    </p>
+                                    <div class="carry">
+                                    	<div class="carry_lf">
+                                        	共浏览11次
+                                        </div>
+                                        <div class="carry_rt">
+                                        	<span style="background:url(img/a5.jpg)"></span>
+                                            <span style="background:url(img/a6.jpg)"></span>
+                                        </div>
+                                        <div style="clear:both"></div>
+                                    </div>
+                                    <div class="comment">
+                                    	<div class="zan">
+                                        	<h1>
+                                            	<span>吃瓜</span>、
+                                                <span>群众</span>
+                                            </h1>
+                                        </div>
+                                        <h2>
+                                        	<span>吃瓜：</span>
+                                            此地无银三百两
+                                        </h2>
+                                        <h2>
+                                        	<span>群众：</span>
+                                            隔壁王二不曾偷
+                                        </h2>
+                                    </div>
+                                    <div class="inpt">
+                                    	<input type="text" />
+                                    </div>
+									
+                                </li>
+								
                             	<li>
                                     <div class="lf">
                                         <img src="img/a1.png" />
@@ -894,6 +942,38 @@ $(function() {
 			}	
 		}
 	}
+</script>
+<!-- 空间弹出页 -->
+<div id="spacebox">
+	<div class="nav_data">
+        <div id="closex" class="left" onclick="window.history.go(-1)">WKWebView与JS交互实战技巧</div>
+    </div>
+<iframe name="ifm" src="space1.html" id="myiframe" scrolling="yes" onload="changeFrameHeight()" frameborder="0" style="width:100%;">
+	
+</iframe>
+</div>
+<script type="text/javascript">
+var space = document.getElementById('space1');
+var spacebox = document.getElementById('spacebox');
+var closex  = document.getElementById('closex');
+
+space.onclick = function()
+{
+	spacebox.setAttribute("class", "animation1"); 
+    spacebox.style.display = 'block';
+}
+closex.onclick = function()
+{
+	spacebox.setAttribute("class", "animation2");
+    spacebox.style.display = 'none';
+}
+function changeFrameHeight(){
+    var ifm= document.getElementById("myiframe"); 
+    ifm.height=document.documentElement.clientHeight;
+}
+window.onresize=function(){  
+     changeFrameHeight();  
+} 
 </script>
 </body>
 </html>
