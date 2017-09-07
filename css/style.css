@@ -155,7 +155,7 @@ body {
   padding: 1em;
   color: white;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 .slider__text-item h3::before, .slider__text-item p::before {
   content: '';
