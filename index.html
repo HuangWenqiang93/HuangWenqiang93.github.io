@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<!--[if lt IE 7 ]><html class="ie ie6" lang="cn"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="cn"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="cn"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="cn"> <!--<![endif]-->
 <head>
 <!-- Basic Page Needs
 ================================================== -->
@@ -16,12 +16,6 @@
 ================================================== -->
 <meta content="width=device-width,initial-scale=1" name="viewport">
 
-<!-- Favicons
-================================================== -->
-<link rel="shortcut icon" href="https://www.guazi.com/favicon.ico">
-<link rel="apple-touch-icon" href="https://www.guazi.com/favicon.ico">
-<link rel="apple-touch-icon" sizes="72x72" href="https://www.guazi.com/favicon.ico">
-<link rel="apple-touch-icon" sizes="114x114" href="https://www.guazi.com/favicon.ico">
 
 <!--fonts
 ====================================================-->
@@ -33,7 +27,6 @@
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <link rel="stylesheet" type="text/css" href="css/simpletextrotator.css">
 
-<link rel="stylesheet" href="dist/jquery.vidbacking.css" type="text/css">
 <link rel="shortcut icon" type="image/x-icon" href="https://www.guazi.com/favicon.ico" media="screen">
 
 	<!--[if lt IE 9]>
@@ -42,11 +35,6 @@
 <script src="js/jquery.min.js"></script> <!-- JQUERY -->
 </head>
 <body>
-
-<div class="htmleaf-container">
-	<video poster="assets/guazi.png" autoplay muted loop class="vidbacking">
-		<source src="assets/pc_index_adv.mp4" type="video/mp4">
-	</video>
 
 <!--FRONT PAGE/ SPLASH SCREEN SECTION-->
 
@@ -557,7 +545,6 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-</div>
 
 <!--javascript files
 =============================================================-->
@@ -569,20 +556,5 @@
 <script src="http://ditu.google.cn/maps/api/js?key=AIzaSyBPNkCVoBW_Jzl6x-hgGU6e7QW1QMwKles"></script>
 <script type="text/javascript" src='js/isotope.pkgd.min.js'></script>
 <script type="text/javascript" src="js/custom.js"></script>
-<script src="dist/jquery.vidbacking.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-    var windowWidth = $(window).width();
-    if(windowWidth < 640){
-        // do something
-    }
-    if(windowWidth > 640){
-        $(function(){
-            $('body').vidbacking({
-                'masked': true
-            });
-        });
-    }
-    </script>
 </body>
 </html>
