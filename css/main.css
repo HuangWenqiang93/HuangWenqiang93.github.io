@@ -916,6 +916,7 @@ body.fixed-header .scrolling-header .navbar .wrap-inside-nav { /*top: 64px;*/ }
   body.fixed-header .scrolling-header .navbar { background: #2b2e33; }
   body.fixed-header .scrolling-header .navbar .navbar-nav li a { color: #fff; }
   .header .navbar { background: #2b2e33; }
+  iframe{width:100%;height: 220px;}
   .header .navbar .navbar-collapse { border: none; margin-top: 70px; }
   .header .navbar .navbar-collapse .navbar-nav { border: none; }
   .header .navbar .relative-nav-container .toggle-button { float: left; }
