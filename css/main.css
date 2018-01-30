@@ -817,7 +817,7 @@ body.fixed-header .scrolling-header .navbar .wrap-inside-nav { /*top: 64px;*/ }
 .service-navigation li.active .navigation-icon, .service-navigation li:hover .navigation-icon { background: #ff6400; }
 .service-navigation li.active .navigation-icon:after, .service-navigation li:hover .navigation-icon:after { border-top-color: #ff6400; }
 .service-navigation li.active .navigation-icon .icon, .service-navigation li:hover .navigation-icon .icon { background: #ff6400; border-color: #ffb07c; color: #fff; }
-.service-navigation .navigation-item { text-align: left; height: 250px; cursor: pointer; margin-bottom: 15px; }
+.service-navigation .navigation-item { text-align: center; height: 250px; cursor: pointer; margin-bottom: 15px; }
 .service-navigation .navigation-item .navigation-icon { margin: 0 auto 55px; width: 170px; max-width: 100%; background: #eff2f7; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; padding: 25px 0; text-align: center; position: relative; -webkit-transition: all 0.3s ease-out; -moz-transition: all 0.3s ease-out; -o-transition: all 0.3s ease-out; transition: all 0.3s ease-out; }
 .service-navigation .navigation-item .goods-icon { margin: 0 auto; width: 280px;height:195px; max-width: 100%; background: #fff; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; padding: 15px 0; text-align: center; position: relative; -webkit-transition: all 0.3s ease-out; -moz-transition: all 0.3s ease-out; -o-transition: all 0.3s ease-out; transition: all 0.3s ease-out; }
 .service-navigation .navigation-item span{ font-size: 14px;color: black;vertical-align: inherit;}
